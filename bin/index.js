@@ -10,6 +10,8 @@ if (typeof process.argv[2] === 'undefined') {
   // evolve give project a name
   // evolve specify desired backend and client ports
   // copy files
+  // ? npm i create-next-app
+  // - pipe project name
   // create client image
 } else if (process.argv[2] === 'run') {
   if (typeof process.argv[3] === 'undefined') {

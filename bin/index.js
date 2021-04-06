@@ -1,17 +1,50 @@
 #!/usr/bin/env node
+const { exec } = require("child_process");
+const prompt = require('prompt-sync')({sigint: true});
 
 const projects = ['hurka'];
 
 if (typeof process.argv[2] === 'undefined') {
   console.log('you are evolving');
+  // present menu of evolve options
 } else if (process.argv[2] === 'new') {
-  console.log('something new!');
   // check for/install docker & docker-compose
-  // evolve give project a name
-  // evolve specify desired backend and client ports
+
+  // capture project name from user prompt
+  console.log('');
+  const projectName = prompt('Please give your project a name: ');
+  
+  // transform project name to lower-case string with dashes in place of white space
+  formattedProjectName = projectName.replace(/\s+/g, '-').toLowerCase();
+  console.log(formattedProjectName);
+
+  // create project directory structure
+  exec(`mkdir ${formattedProjectName}; cd ${formattedProjectName};\
+    mkdir ${formattedProjectName}-client; mkdir ${formattedProjectName}-backend`, (error, stdout, stderr) => {
+    if (error || stderr) {
+      error && console.log(`error: ${error.message}`);
+      stderr && console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
+
   // copy files
-  // ? npm i create-next-app
-  // - pipe project name
+
+  // // bootstrap new next app from evolve-next-starter repo  
+  // exec(`npm i create-next-app; npx create-next-app ${projectName} \
+  //      -e https://github.com/kento-mc/evolve-next-starter`, (error, stdout, stderr) => {
+  //   if (error) {
+  //       console.log(`error: ${error.message}`);
+  //       return;
+  //   }
+  //   if (stderr) {
+  //       console.log(`stderr: ${stderr}`);
+  //       return;
+  //   }
+  //   console.log(`stdout: ${stdout}`);
+  // });
+
   // create client image
 } else if (process.argv[2] === 'run') {
   if (typeof process.argv[3] === 'undefined') {
@@ -35,3 +68,20 @@ if (typeof process.argv[2] === 'undefined') {
 // wp cli install/activate theme/plugin
 // initialize next
 // launch browser windows
+
+
+
+
+
+
+  // exec(``, (error, stdout, stderr) => {
+  //   if (error) {
+  //       console.log(`error: ${error.message}`);
+  //       return;
+  //   }
+  //   if (stderr) {
+  //       console.log(`stderr: ${stderr}`);
+  //       return;
+  //   }
+  //   console.log(`stdout: ${stdout}`);
+  // });

@@ -10,5 +10,8 @@
   "license": "ISC",
   "bin": {
     "evolve": "./bin/index.js"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
   }
 }

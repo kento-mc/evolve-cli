@@ -1,3 +1,4 @@
+node_modules/
 wordpress/uploads
 wordpress/plugins/evolve-api
 wordpress/plugins/akismet

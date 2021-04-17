@@ -69,23 +69,26 @@ switch (process.argv[2]) {
     projectsData = fs.readFileSync(path.resolve(__dirname, 'projects.json'));
     projects = JSON.parse(projectsData);
 
-    if (typeof process.argv[3] === 'undefined') {
-      // display list of evolve projects
-      if (projects.length > 1) {
-        console.log('\nWhich project would you like to run?');
-        projects.forEach((project, i) => {
-          console.log(`  ${i+1}) ${project.name}`)
-        });
-        const option = prompt('====> ');
-        // TODO finish options
-        console.log(`\nYou chose option ${option}`)
-      }
-
-    } else if (projects.includes(process.argv[3])) {
-      console.log(`Launching ${process.argv[3]} project`);
-      // spin up project
-    } else {
-      console.log('no such project');
+    switch (process.argv[3]) {
+      case undefined:
+        // display list of evolve projects
+        if (projects.length > 1) {
+          console.log('\nWhich project would you like to run?');
+          projects.forEach((project, i) => {
+            console.log(`  ${i+1}) ${project.name}`)
+          });
+          const option = prompt('====> ');
+          // TODO finish options
+          console.log(`\nYou chose option ${option}`)
+        }
+        break;
+      case projects.includes(process.argv[3]):
+        console.log(`Launching ${process.argv[3]} project`);
+        // spin up project
+        break;
+      default:
+        console.log('no such project');
+        break;
     };
     break;
   case 'list':

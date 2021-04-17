@@ -47,19 +47,16 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // copy files
+    // degit from wordpress starter
 
     // // bootstrap new next app from evolve-next-starter repo  
     // exec(`npm i create-next-app; npx create-next-app ${projectName} \
     //      -e https://github.com/kento-mc/evolve-next-starter`, (error, stdout, stderr) => {
-    //   if (error) {
-    //       console.log(`error: ${error.message}`);
-    //       return;
-    //   }
-    //   if (stderr) {
-    //       console.log(`stderr: ${stderr}`);
-    //       return;
-    //   }
+    // if (error || stderr) {
+    //   error && console.log(`error: ${error.message}`);
+    //   stderr && console.log(`stderr: ${stderr}`);
+    //   return;
+    // }
     //   console.log(`stdout: ${stdout}`);
     // });
 

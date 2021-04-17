@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 const { exec } = require("child_process");
 const prompt = require('prompt-sync')({sigint: true});
+const fs = require('fs');
+const path = require('path');
 
-const projects = ['hurka'];
+const projects = [];
 
 if (typeof process.argv[2] === 'undefined') {
   console.log('you are evolving');
@@ -16,6 +18,12 @@ if (typeof process.argv[2] === 'undefined') {
   
   // transform project name to lower-case string with dashes in place of white space
   formattedProjectName = projectName.replace(/\s+/g, '-').toLowerCase();
+
+  // push project name to projects array
+  projects.push({
+    name: projectName,
+    slug: formattedProjectName,
+  })
   console.log(formattedProjectName);
 
   // create project directory structure
@@ -48,15 +56,41 @@ if (typeof process.argv[2] === 'undefined') {
   // create client image
 } else if (process.argv[2] === 'run') {
   if (typeof process.argv[3] === 'undefined') {
-    console.log('list of projects');
     // display list of evolve projects
+    let projectsData = fs.readFileSync(path.resolve('../evolve-cli', 'projects.json'));
+    let projects = JSON.parse(projectsData);
+
+    if (projects.length > 1) {
+      console.log('\nWhich project would you like to run?');
+      projects.forEach((project, i) => {
+        console.log(`  ${i+1}) ${project.name}`)
+      });
+      const option = prompt('====> ');
+      // TODO finish options
+      console.log(`\nYou chose option ${option}`)
+    }
+
   } else if (projects.includes(process.argv[3])) {
     console.log(`Launching ${process.argv[3]} project`);
     // spin up project
   } else {
     console.log('no such project');
   };
-} else {
+} else if (process.argv[2] === 'list') {
+  // display list of evolve projects
+  let projectsData = fs.readFileSync(path.resolve('../evolve-cli', 'projects.json'));
+  let projects = JSON.parse(projectsData);
+
+  console.log('\nEvolve projects');
+  projects.forEach((project, i) => {
+    console.log(`  ${i+1}) ${project.name}`)
+  });
+  console.log('\nEnter prjoject number for more options');
+  const option = prompt('====> ');
+  // TODO finish options
+  console.log(`\nYou chose option ${option}`)
+
+}else {
   console.log(`command "${process.argv[2]}" not recognized!`);
 };
 

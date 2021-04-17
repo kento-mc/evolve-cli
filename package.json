@@ -12,6 +12,7 @@
     "evolve": "./bin/index.js"
   },
   "dependencies": {
+    "degit": "^2.8.4",
     "prompt-sync": "^4.2.0"
   }
 }

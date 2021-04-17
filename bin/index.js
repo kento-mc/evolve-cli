@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-const { exec } = require("child_process");
+const { exec, execSync } = require("child_process");
 const prompt = require('prompt-sync')({sigint: true});
 const fs = require('fs');
 const path = require('path');
+const degit = require('degit')
 
 let projectsData;
 let projects;
@@ -14,17 +15,27 @@ switch (process.argv[2]) {
     break;
   case 'new':
     // check for/install docker & docker-compose
+    execSync(`npm i docker docker-compose degit`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
     // capture project name from user prompt
     console.log('');
     const projectName = prompt('Please give your project a name: ');
     
     // transform project name to lower-case string with dashes in place of white space
-    formattedProjectName = projectName.replace(/\s+/g, '-').toLowerCase();
+    const formattedProjectName = projectName.replace(/\s+/g, '-').toLowerCase();
+    const projectContainerName = projectName.replace(/\s+/g, '_').toLowerCase(); 
 
     const newProject = {
       name: projectName,
       slug: formattedProjectName,
+      container: projectContainerName
     };
 
     // add new project to list of projects
@@ -37,8 +48,9 @@ switch (process.argv[2]) {
     console.log(`\nCreated new project: ${newProject.name}\nSetting up project repositories...`);
 
     // create project directory structure
-    exec(`mkdir ${formattedProjectName}; cd ${formattedProjectName};\
-      mkdir ${formattedProjectName}-client; mkdir ${formattedProjectName}-backend`, (error, stdout, stderr) => {
+    execSync(`mkdir ${formattedProjectName}; cd ${formattedProjectName};\
+      mkdir ${formattedProjectName}-client; mkdir ${formattedProjectName}-backend;\
+      cd ${formattedProjectName}-backend; degit kento-mc/evolve-wordpress-starter`, (error, stdout, stderr) => {
       if (error || stderr) {
         error && console.log(`error: ${error.message}`);
         stderr && console.log(`stderr: ${stderr}`);
@@ -47,7 +59,73 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // degit from wordpress starter
+    // rename plugin TODO also change theme data
+    execSync(`cd ${formattedProjectName}/${formattedProjectName}-backend/wordpress/plugins; \
+      mv evolve-api ${formattedProjectName}-api`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    })
+    
+    // spin up wordpress container
+    execSync(`cd ${formattedProjectName}/${formattedProjectName}-backend; \
+      CONTAINER_NAME=${projectContainerName} docker-compose up -d`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    // // prompt for wp username, password, email address
+    // console.log('');
+    // const wpAdmin = prompt('Please enter your preferred WordPress admin user name: ');
+    // const wpPassword = prompt('Please enter your preferred WordPress admin password: ');
+    // const wpEmail = prompt('Please enter your preferred WordPress admin email address: ');
+
+    // // run wordpress install
+    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
+    //   --network container:${projectContainerName}_wordpress_1 wordpress:cli wp core install \
+    //   --title=${projectName}-backend \
+    //   --admin_user=${wpAdmin} \
+    //   --admin_password=${wpPassword} \
+    //   --admin_email=${wpEmail}`, (error, stdout, stderr) => {
+    //   if (error || stderr) {
+    //     error && console.log(`error: ${error.message}`);
+    //     stderr && console.log(`stderr: ${stderr}`);
+    //     return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // });
+
+    // // run theme install
+    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
+    //   --network container:${projectContainerName}_wordpress_1 \
+    //   wordpress:cli wp theme activate ${formattedProjectName}`, (error, stdout, stderr) => {
+    //   if (error || stderr) {
+    //     error && console.log(`error: ${error.message}`);
+    //     stderr && console.log(`stderr: ${stderr}`);
+    //     return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // });
+
+    // // run plugin activation
+    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
+    //   --network container:${projectContainerName}_wordpress_1 \
+    //   wordpress:cli wp plugin activate ${formattedProjectName}-api`, (error, stdout, stderr) => {
+    //   if (error || stderr) {
+    //     error && console.log(`error: ${error.message}`);
+    //     stderr && console.log(`stderr: ${stderr}`);
+    //     return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // });
+
 
     // // bootstrap new next app from evolve-next-starter repo  
     // exec(`npm i create-next-app; npx create-next-app ${projectName} \
@@ -102,6 +180,8 @@ switch (process.argv[2]) {
     // TODO finish options
     console.log(`\nYou chose option ${option}`)
     break;
+  case 'pwd':
+    
   default:
     console.log(`command "${process.argv[2]}" not recognized!`);
     break;

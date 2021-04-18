@@ -81,26 +81,27 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // // prompt for wp username, password, email address
-    // console.log('');
-    // const wpAdmin = prompt('Please enter your preferred WordPress admin user name: ');
-    // const wpPassword = prompt('Please enter your preferred WordPress admin password: ');
-    // const wpEmail = prompt('Please enter your preferred WordPress admin email address: ');
+    // prompt for wp username, password, email address
+    console.log('');
+    const wpAdmin = prompt('Please create a WordPress admin user name: ');
+    const wpPassword = prompt('Please create a WordPress admin password: ');
+    const wpEmail = prompt('Please enter a WordPress admin email address: ');
 
-    // // run wordpress install
-    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
-    //   --network container:${projectContainerName}_wordpress_1 wordpress:cli wp core install \
-    //   --title=${projectName}-backend \
-    //   --admin_user=${wpAdmin} \
-    //   --admin_password=${wpPassword} \
-    //   --admin_email=${wpEmail}`, (error, stdout, stderr) => {
-    //   if (error || stderr) {
-    //     error && console.log(`error: ${error.message}`);
-    //     stderr && console.log(`stderr: ${stderr}`);
-    //     return;
-    //   }
-    //   console.log(`stdout: ${stdout}`);
-    // });
+    // run wordpress install
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress wordpress:cli wp core install \
+      --url=localhost:8000 \
+      --title=${formattedProjectName}-backend \
+      --admin_user=${wpAdmin} \
+      --admin_password=${wpPassword} \
+      --admin_email=${wpEmail}`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
     // // run theme install
     // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \

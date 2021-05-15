@@ -115,9 +115,20 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // run plugin activations
 
-    // Advanced Custom Fields
+    // Install Advanced Custom Fields
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress \
+      wordpress:cli wp plugin install https://downloads.wordpress.org/plugin/advanced-custom-fields.5.9.5.zip`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    // Activate Advanced Custom Fields
     execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
       --network container:${projectContainerName}_wordpress \
       wordpress:cli wp plugin activate advanced-custom-fields`, (error, stdout, stderr) => {
@@ -129,7 +140,7 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // Evolve Api
+    // Activate Evolve Api
     execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
       --network container:${projectContainerName}_wordpress \
       wordpress:cli wp plugin activate evolve-api`, (error, stdout, stderr) => {

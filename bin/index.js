@@ -59,16 +59,16 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // rename plugin TODO also change theme data
-    execSync(`cd ${formattedProjectName}/${formattedProjectName}-backend/wordpress/plugins; \
-      mv evolve-api ${formattedProjectName}-api`, (error, stdout, stderr) => {
-      if (error || stderr) {
-        error && console.log(`error: ${error.message}`);
-        stderr && console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    })
+    // // rename plugin TODO also change theme data
+    // execSync(`cd ${formattedProjectName}/${formattedProjectName}-backend/wordpress/plugins; \
+    //   mv evolve-api ${formattedProjectName}-api`, (error, stdout, stderr) => {
+    //   if (error || stderr) {
+    //     error && console.log(`error: ${error.message}`);
+    //     stderr && console.log(`stderr: ${stderr}`);
+    //     return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // })
     
     // spin up wordpress container
     execSync(`cd ${formattedProjectName}/${formattedProjectName}-backend; \
@@ -103,29 +103,43 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // // run theme install
-    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
-    //   --network container:${projectContainerName}_wordpress_1 \
-    //   wordpress:cli wp theme activate ${formattedProjectName}`, (error, stdout, stderr) => {
-    //   if (error || stderr) {
-    //     error && console.log(`error: ${error.message}`);
-    //     stderr && console.log(`stderr: ${stderr}`);
-    //     return;
-    //   }
-    //   console.log(`stdout: ${stdout}`);
-    // });
+    // run Evolve theme install
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress \
+      wordpress:cli wp theme activate evolve`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
-    // // run plugin activation
-    // execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress_1 \
-    //   --network container:${projectContainerName}_wordpress_1 \
-    //   wordpress:cli wp plugin activate ${formattedProjectName}-api`, (error, stdout, stderr) => {
-    //   if (error || stderr) {
-    //     error && console.log(`error: ${error.message}`);
-    //     stderr && console.log(`stderr: ${stderr}`);
-    //     return;
-    //   }
-    //   console.log(`stdout: ${stdout}`);
-    // });
+    // run plugin activations
+
+    // Advanced Custom Fields
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress \
+      wordpress:cli wp plugin activate advanced-custom-fields`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    // Evolve Api
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress \
+      wordpress:cli wp plugin activate evolve-api`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
 
     // // bootstrap new next app from evolve-next-starter repo  

@@ -90,7 +90,7 @@ switch (process.argv[2]) {
     // run wordpress install
     console.log('');
     console.log('Installing Wordpress...');
-    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+    execSync(`sleep 10; docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
       --network container:${projectContainerName}_wordpress wordpress:cli wp core install \
       --url=localhost:8000 \
       --title=${formattedProjectName}-backend \

@@ -1,1 +1,17 @@
-[{"name":"Pretty Please","slug":"pretty-please","container":"pretty_please"},{"name":"Ready","slug":"ready","container":"ready"}]
+[
+  {
+    "name": "Pretty Please",
+    "slug": "pretty-please",
+    "container": "pretty_please"
+  },
+  { "name": "Ready", "slug": "ready", "container": "ready" },
+  { "name": "Hey Ya", "slug": "hey-ya", "container": "hey_ya" },
+  {
+    "name": "Super Trooper",
+    "slug": "super-trooper",
+    "container": "super_trooper"
+  },
+  { "name": "Big Un", "slug": "big-un", "container": "big_un" },
+  { "name": "Scooba Time", "slug": "scooba-time", "container": "scooba_time" },
+  { "name": "Scub Bub", "slug": "scub-bub", "container": "scub_bub" }
+]

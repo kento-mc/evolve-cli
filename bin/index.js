@@ -88,6 +88,8 @@ switch (process.argv[2]) {
     const wpEmail = prompt('Please enter a WordPress admin email address: ');
 
     // run wordpress install
+    console.log('');
+    console.log('Installing Wordpress...');
     execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
       --network container:${projectContainerName}_wordpress wordpress:cli wp core install \
       --url=localhost:8000 \
@@ -104,6 +106,7 @@ switch (process.argv[2]) {
     });
 
     // run Evolve theme install
+    console.log('Setting up Evolve API...')
     execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
       --network container:${projectContainerName}_wordpress \
       wordpress:cli wp theme activate evolve`, (error, stdout, stderr) => {
@@ -164,16 +167,18 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
-    // // bootstrap new next app from evolve-next-starter repo  
-    // exec(`npm i create-next-app; npx create-next-app ${projectName} \
-    //      -e https://github.com/kento-mc/evolve-next-starter`, (error, stdout, stderr) => {
-    // if (error || stderr) {
-    //   error && console.log(`error: ${error.message}`);
-    //   stderr && console.log(`stderr: ${stderr}`);
-    //   return;
-    // }
-    //   console.log(`stdout: ${stdout}`);
-    // });
+    // bootstrap new next app from evolve-next-starter repo 
+    console.log('Setting up Evolve client...') 
+    exec(`cd ${formattedProjectName};\
+      npm i create-next-app; npx create-next-app ${formattedProjectName}-client \
+          -e https://github.com/kento-mc/evolve-next-starter`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
     // create client image
     break;

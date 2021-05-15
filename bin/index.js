@@ -152,6 +152,17 @@ switch (process.argv[2]) {
       console.log(`stdout: ${stdout}`);
     });
 
+    // Update permalinks structure
+    execSync(`docker run --rm --user 33 --volumes-from ${projectContainerName}_wordpress \
+      --network container:${projectContainerName}_wordpress \
+      wordpress:cli wp rewrite structure '/%postname%/'`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
     // // bootstrap new next app from evolve-next-starter repo  
     // exec(`npm i create-next-app; npx create-next-app ${projectName} \

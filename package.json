@@ -7,8 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kent Chadwick",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "evolve": "./bin/index.js"
+  },
+  "dependencies": {
+    "degit": "^2.8.4",
+    "prompt-sync": "^4.2.0"
   }
 }

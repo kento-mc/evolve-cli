@@ -7,6 +7,7 @@ const degit = require('degit')
 
 let projectsData;
 let projects;
+let projectContName;
 
 switch (process.argv[2]) {
   case undefined:
@@ -186,27 +187,60 @@ switch (process.argv[2]) {
     projectsData = fs.readFileSync(path.resolve(__dirname, 'projects.json'));
     projects = JSON.parse(projectsData);
 
-    switch (process.argv[3]) {
-      case undefined:
-        // display list of evolve projects
-        if (projects.length > 1) {
-          console.log('\nWhich project would you like to run?');
-          projects.forEach((project, i) => {
-            console.log(`  ${i+1}) ${project.name}`)
-          });
-          const option = prompt('====> ');
-          // TODO finish options
-          console.log(`\nYou chose option ${option}`)
-        }
-        break;
-      case projects.includes(process.argv[3]):
-        console.log(`Launching ${process.argv[3]} project`);
-        // spin up project
-        break;
-      default:
-        console.log('no such project');
-        break;
-    };
+    // TODO: Implement switch statement for more options
+    // switch (process.argv[3]) {
+    //   case undefined:
+    //     // display list of evolve projects
+    //     if (projects.length > 1) {
+    //       console.log('\nWhich project would you like to run?');
+    //       projects.forEach((project, i) => {
+    //         console.log(`  ${i+1}) ${project.name}`)
+    //       });
+    //       const option = prompt('====> ');
+    //       // TODO finish options
+    //       console.log(`\nYou chose option ${option}`)
+    //     }
+    //     break;
+    //   case projects.includes(process.argv[3]):
+    //     console.log(`Launching ${process.argv[3]} project`);
+    //     // spin up project
+    //     break;
+    //   default:
+    //     console.log('no such project');
+    //     break;
+    // };
+  
+    projectContName = projects.filter((project) => project.container === process.argv[3])[0].container;
+
+    // spin up wordpress container
+    console.log('Starting containers...') 
+    execSync(`CONTAINER_NAME=${projectContName} docker-compose up -d`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    break;
+  case 'stop':
+    projectsData = fs.readFileSync(path.resolve(__dirname, 'projects.json'));
+    projects = JSON.parse(projectsData);
+  
+    projectContName = projects.filter((project) => project.container === process.argv[3])[0].container;
+
+    // spin up wordpress container
+    console.log('Stopping containers...') 
+    execSync(`CONTAINER_NAME=${projectContName} docker-compose down`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        error && console.log(`error: ${error.message}`);
+        stderr && console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
     break;
   case 'list':
     // display list of evolve projects

@@ -12,8 +12,11 @@ evolve new
 
 The user is then prompted to give their project a name and it creates two directories for the backend and frontend repositories and installs the necessary dependencies. The user is then prompted for user credentials for the Wordpress installation - username, password, and email address.
 
-And that’s it! The user can then view the new frontend client at localhost:3000.
+And that’s it! The user can then view the new frontend client at localhost:3000, which has a very simple, single page:
+![fig 1](/images/001.png)
 
-The user can navigate to the backend CMS at localhost:8000/wp-admin and log into the Wordpress Admin dashboard. They will see a section for the Evolve custom post type, where they can add a post.
+The user can navigate to the backend CMS at localhost:8000/wp-admin and log into the Wordpress Admin dashboard. They will see a section for the Evolve custom post type, where they can add a post:
+![fig 1](/images/002.png)
 
-When they return to the client page and refresh they will see data returned from the post that has just been added in the CMS
+When they return to the client page and refresh they will see data returned from the post that has just been added in the CMS:
+![fig 1](/images/003.png)

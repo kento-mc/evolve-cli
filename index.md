@@ -1,6 +1,6 @@
-A simple CLI tool to simplify the process of moving from a Wordpress website to a modern Next.js web app using Wordpress as a headless CMS.
+A CLI tool to simplify the process of moving from a WordPress website to a modern Next.js web app using WordPress as a headless CMS.
 
-The CLI tool bootstraps a basic local implementation of necessary Docker containers and network configuration and sets up starter repos for the Wordpress backend and Next.js client.
+The CLI tool bootstraps a basic local implementation of necessary Docker containers and network configuration and sets up starter repos for the WordPress backend and Next.js client.
 
 ### Usage
 
@@ -10,7 +10,7 @@ After downloading the repo, run 'npm install' to install the CLI. Getting starte
 evolve new
 ```
 
-The user is then prompted to give their project a name and it creates two directories for the backend and frontend repositories and installs the necessary dependencies. The user is then prompted for user credentials for the Wordpress installation - username, password, and email address.
+The user is then prompted to give their project a name and it creates two directories for the backend and frontend repositories and installs the necessary dependencies. The user is then prompted for user credentials for the WordPress installation - username, password, and email address.
 
 And that’s it! The user can then view the new frontend client at localhost:3000, which has a very simple, single page:
 ![fig 1](/images/001.png)

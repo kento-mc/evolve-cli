@@ -1,37 +1,19 @@
-## Welcome to GitHub Pages
+A simple CLI tool to simplify the process of moving from a Wordpress website to a modern Next.js web app using Wordpress as a headless CMS.
 
-You can use the [editor on GitHub](https://github.com/kento-mc/evolve-cli/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The CLI tool bootstraps a basic local implementation of necessary Docker containers and network configuration and sets up starter repos for the Wordpress backend and Next.js client.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Usage
 
-### Markdown
+After installing the CLI, getting started with this technology stack is then as simple as running a single command:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+evolve new
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+The user is then prompted to give their project a name and it creates two directories for the backend and frontend repositories and installs the necessary dependencies. The user is then prompted for user credentials for the Wordpress installation - username, password, and email address.
 
-### Jekyll Themes
+And that’s it! The user can then view the new frontend client at localhost:3000.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kento-mc/evolve-cli/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+The user can navigate to the backend CMS at localhost:8000/wp-admin and log into the Wordpress Admin dashboard. They will see a section for the Evolve custom post type, where they can add a post.
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+When they return to the client page and refresh they will see data returned from the post that has just been added in the CMS

@@ -4,7 +4,7 @@ The CLI tool bootstraps a basic local implementation of necessary Docker contain
 
 ### Usage
 
-After installing the CLI, getting started with this technology stack is then as simple as running a single command:
+After downloading the repo, run 'npm install' to install the CLI. Getting started with this technology stack is then as simple as running a single command:
 
 ```bash
 evolve new
